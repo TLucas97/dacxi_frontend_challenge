@@ -1,0 +1,37 @@
+{
+    "homepage": "https://tlucas97.github.io/dacxi_frontend_challenge/",
+    "name": "dacxi_frontend_challenge",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build"
+    },
+    "dependencies": {
+        "apexcharts": "^3.36.0",
+        "autoprefixer": "^9.8.8",
+        "axios": "^1.1.3",
+        "core-js": "^3.6.5",
+        "postcss": "^7.0.39",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+        "vue": "^2.6.11",
+        "vue-apexcharts": "^1.6.2",
+        "vue-toastification": "^1.7.14",
+        "vuetify": "^2.6.0",
+        "vuetify-datetime-picker": "^2.1.1"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.15",
+        "@vue/cli-service": "~4.5.15",
+        "sass": "~1.32.0",
+        "sass-loader": "^10.0.0",
+        "vue-cli-plugin-vuetify": "~2.5.8",
+        "vue-template-compiler": "^2.6.11",
+        "vuetify-loader": "^1.7.0"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ]
+}
