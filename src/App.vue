@@ -3,11 +3,11 @@
         <div class="bg-dacxi-white h-full">
             <Header />
             <div
-                class="flex justify-between align-center w-8/12 mx-auto height-adjust"
+                class="flex justify-evenly flex-column flex-md-row align-center w-11/12 sm:w-11/12 mx-auto height-adjust"
             >
                 <div>
                     <p class="text-center text-sm" @click="updateChart()">
-                        {{ priceTitle }} test
+                        {{ priceTitle }}
                     </p>
                     <div v-if="loading" class="flex justify-center mb-7">
                         <v-progress-circular
@@ -70,11 +70,11 @@
                         >{{ filterButton }}</v-btn
                     >
                 </div>
-                <div>
+                <div class="mt-10 mt-md-0">
                     <div
-                        class="flex justify-end mb-5 font-weight-bold fade-in fade-out"
+                        class="flex justify-center mb-5 font-weight-bold fade-in fade-out"
                     >
-                        <h3>
+                        <h3 class="text-base">
                             <span class="text-capitalize">{{
                                 cripto.currentCripto
                             }}</span>
@@ -84,13 +84,15 @@
                             }}</span>
                         </h3>
                     </div>
-                    <apexchart
-                        width="650"
-                        type="area"
-                        :options="options"
-                        :series="series"
-                        class="fade-in fade-out"
-                    ></apexchart>
+                    <div>
+                        <apexchart
+                            width="600"
+                            type="area"
+                            :options="options"
+                            :series="series"
+                            class="fade-in fade-out"
+                        ></apexchart>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,15 +100,8 @@
 </template>
 
 <script>
-import {
-    getCoinCurrentPrice,
-    formatPriceBasedOnCoin,
-    getCurrentCoinPriceBasedOnDate,
-    convertDateToMiliseconds,
-    validateDateBasedOnCrypto,
-    disableFutureDates,
-    getCoinMarketChart,
-} from './utils/methods'
+import * as gecko from './utils/methods'
+import { mockedData } from './utils/mockedData'
 import Header from './components/Header.vue'
 
 export default {
@@ -127,75 +122,18 @@ export default {
         dateTime: '',
         progressValue: 0,
         progressView: true,
-        options: {
-            chart: {
-                id: 'dacxi-cripto-chart',
-            },
-            xaxis: {
-                categories: [],
-            },
-        },
-        series: [
-            {
-                name: '',
-                data: [],
-            },
-        ],
-        coin: {
-            coins: [
-                {
-                    text: 'USD',
-                    value: 'usd',
-                },
-                {
-                    text: 'EUR',
-                    value: 'eur',
-                },
-                {
-                    text: 'BRL',
-                    value: 'brl',
-                },
-            ],
-            currentCoin: 'usd',
-        },
-        cripto: {
-            criptos: [
-                {
-                    text: 'Ethereum',
-                    value: 'ethereum',
-                },
-                {
-                    text: 'Bitcoin',
-                    value: 'bitcoin',
-                },
-                {
-                    text: 'Luna',
-                    value: 'terra-luna',
-                },
-                {
-                    text: 'Dacxi',
-                    value: 'dacxi',
-                },
-            ],
-            currentCripto: 'bitcoin',
-        },
+        coin: mockedData[0],
+        cripto: mockedData[1],
+        options: mockedData[2].options,
+        series: mockedData[2].series,
     }),
-    async mounted() {
-        this.loadChart()
+    mounted() {
         this.setCripto()
         this.timerUpdate()
     },
     methods: {
-        async loadChart() {
-            const { prices } = await getCoinMarketChart(
-                this.cripto.currentCripto,
-                this.coin.currentCoin
-            )
-            this.series[0].data = prices.map((price) => price[1].toFixed(4))
-            this.series[0].name = 'bitcoin $'
-        },
         async updateChart() {
-            const { prices } = await getCoinMarketChart(
+            const { prices } = await gecko.getCoinMarketChart(
                 this.cripto.currentCripto,
                 this.coin.currentCoin
             )
@@ -210,7 +148,7 @@ export default {
         async setCripto() {
             this.loading = true
             this.progressValue = 0
-            this.price = await getCoinCurrentPrice(
+            this.price = await gecko.getCoinCurrentPrice(
                 this.cripto.currentCripto,
                 this.coin.currentCoin
             )
@@ -228,47 +166,33 @@ export default {
             }, 100)
         },
         formatCurrency(value, coin) {
-            return formatPriceBasedOnCoin(value, coin)
+            return gecko.formatPriceBasedOnCoin(value, coin)
         },
         async setDateTime() {
             if (this.currentTime.date === '' || this.currentTime.hour === '') {
                 this.$toast.warning('Please select a date and hour')
                 return
             }
-            const fullDate = new Date(
-                this.currentTime.date + ' ' + this.currentTime.hour
+            const fullDate = gecko.mergeDateAndTime(
+                this.currentTime.date,
+                this.currentTime.hour
             )
-            const dateValidation = disableFutureDates(fullDate)
-            if (dateValidation) {
+            if (gecko.disableFutureDates(fullDate)) {
                 this.$toast.warning("You can't select a future date")
                 return
             }
             this.progressView = false
             this.loading = true
-            const dateResult = validateDateBasedOnCrypto(
+            const dateResult = gecko.validateDateBasedOnCrypto(
                 this.cripto.currentCripto,
                 fullDate
             )
-            const fulldatePlusOneHour = new Date(
-                dateResult.getTime() + 300 * 300 * 1000
-            )
-            const fullDateMinusOneHour = new Date(
-                dateResult.getTime() - 300 * 300 * 1000
-            )
-            const result = await getCurrentCoinPriceBasedOnDate(
+            const result = await gecko.getCurrentCoinPriceBasedOnDate(
                 this.cripto.currentCripto,
                 this.coin.currentCoin,
-                fullDateMinusOneHour,
-                fulldatePlusOneHour
+                dateResult
             )
-            const currentDateTimeStamp = convertDateToMiliseconds(fullDate)
-            const closestPrice = result.prices.reduce((prev, curr) => {
-                return Math.abs(curr[0] - currentDateTimeStamp) <
-                    Math.abs(prev[0] - currentDateTimeStamp)
-                    ? curr
-                    : prev
-            })
-            this.oldPrice = closestPrice[1]
+            this.oldPrice = result[1]
             this.priceTitle = 'Closest available price'
             this.filterButton = 'Clear filters'
             this.loading = false

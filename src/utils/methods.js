@@ -1,14 +1,18 @@
 import geckoApi from './geckoApi'
 
 export const getCoinMarketChart = async (cripto, coin, days = 30) => {
-    const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
-        params: {
-            vs_currency: coin,
-            days: days,
-            interval: 'daily',
-        },
-    })
-    return data
+    try {
+        const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
+            params: {
+                vs_currency: coin,
+                days: days,
+                interval: 'daily',
+            },
+        })
+        return data
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getCoinCurrentPrice = async (cripto, coin) => {
@@ -20,19 +24,46 @@ export const getCoinCurrentPrice = async (cripto, coin) => {
     }
 }
 
+export const getPastFutureRange = (date, futureOrPast) => {
+    const timeState = {
+        future: new Date(date.getTime() + 300 * 300 * 1000),
+        past: new Date(date.getTime() - 300 * 300 * 1000),
+    }
+    return timeState[futureOrPast]
+}
+
 export const getCurrentCoinPriceBasedOnDate = async (
     cripto,
     coin,
-    fromDate,
-    toDate
+    targetDate
 ) => {
-    const fromTimestamp = convertDateToMiliseconds(fromDate)
-    const toTimestamp = convertDateToMiliseconds(toDate)
+    const ranges = {
+        pastDate: getPastFutureRange(targetDate, 'past'),
+        futureDate: getPastFutureRange(targetDate, 'future'),
+    }
+    const timeStamps = {
+        from: convertDateToMiliseconds(ranges.pastDate),
+        to: convertDateToMiliseconds(ranges.futureDate),
+        current: convertDateToMiliseconds(targetDate),
+    }
     try {
         const { data } = await geckoApi.get(
-            `/coins/${cripto}/market_chart/range?vs_currency=${coin}&from=${fromTimestamp}&to=${toTimestamp}`
+            `/coins/${cripto}/market_chart/range?`,
+            {
+                params: {
+                    vs_currency: coin,
+                    from: timeStamps.from,
+                    to: timeStamps.to,
+                },
+            }
         )
-        return data
+        const closestPrice = data.prices.reduce((prev, curr) => {
+            return Math.abs(curr[0] - timeStamps.current) <
+                Math.abs(prev[0] - timeStamps.current)
+                ? curr
+                : prev
+        })
+        return closestPrice
     } catch (error) {
         console.log(error)
     }
@@ -94,4 +125,8 @@ export const validateDateBasedOnCrypto = (cripto, oldDate) => {
 export const disableFutureDates = (date) => {
     const today = new Date()
     return date > today
+}
+
+export const mergeDateAndTime = (date, time) => {
+    return new Date(date + ' ' + time)
 }

@@ -14,6 +14,9 @@ module.exports = {
                 'dacxi-blue': '#000032',
             },
         },
+        fontSize: {
+            'smaller': '0.5rem',
+        }
     },
     variants: {
         extend: {},
