@@ -3,9 +3,15 @@
     "name": "dacxi_frontend_challenge",
     "version": "0.1.0",
     "private": true,
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    },
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build"
+        "build": "vue-cli-service build",
+        "test": "jest"
     },
     "dependencies": {
         "apexcharts": "^3.36.0",
@@ -21,12 +27,22 @@
         "vuetify-datetime-picker": "^2.1.1"
     },
     "devDependencies": {
+        "@babel/core": "^7.19.6",
+        "@babel/preset-env": "^7.19.4",
+        "@testing-library/jest-dom": "^5.16.5",
+        "@testing-library/vue": "^5.8.3",
         "@vue/cli-plugin-babel": "~4.5.15",
         "@vue/cli-service": "~4.5.15",
+        "@vue/test-utils": "^2.2.1",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-jest": "^29.2.2",
         "cypress": "^10.11.0",
+        "jest": "^29.2.2",
+        "jest-environment-jsdom": "^29.2.2",
         "sass": "~1.32.0",
         "sass-loader": "^10.0.0",
         "vue-cli-plugin-vuetify": "~2.5.8",
+        "vue-jest": "^3.0.7",
         "vue-template-compiler": "^2.6.11",
         "vuetify-loader": "^1.7.0"
     },

@@ -1,14 +1,12 @@
 <template>
     <v-app>
-        <div class="bg-dacxi-white h-full">
+        <div class="bg-dacxi-white h-full" data-testid="dacxi-app">
             <Header />
             <div
                 class="flex justify-evenly flex-column flex-md-row align-center w-11/12 sm:w-11/12 mx-auto height-adjust"
             >
                 <div>
-                    <p class="text-center text-sm">
-                        {{ priceTitle }}
-                    </p>
+                    <p class="text-center text-sm">{{ priceTitle }}</p>
                     <div v-if="loading" class="flex justify-center mb-7">
                         <v-progress-circular
                             indeterminate
@@ -19,6 +17,7 @@
                     <h1
                         v-else
                         class="text-center mb-5 text-h4 fade-in fade-out font-weight-bold text-dacxi-error"
+                        data-test-id="price"
                     >
                         {{
                             progressView
@@ -102,6 +101,7 @@
                             :options="options"
                             :series="series"
                             class="fade-in fade-out"
+                            data-testid="dacxi-apex-chart"
                         ></apexchart>
                     </div>
                 </div>
@@ -141,20 +141,27 @@ export default {
     mounted() {
         this.setCripto()
         this.timerUpdate()
+        this.updateChart()
     },
     methods: {
         async updateChart() {
-            const { prices } = await gecko.getCoinMarketChart(
-                this.cripto.currentCripto,
-                this.coin.currentCoin
-            )
-            const ain = prices.map((price) => price[1].toFixed(4))
-            this.series = [
-                {
-                    data: ain,
-                    name: this.cripto.currentCripto.toLocaleUpperCase(),
-                },
-            ]
+            try {
+                const { prices } = await gecko.getCoinMarketChart(
+                    this.cripto.currentCripto,
+                    this.coin.currentCoin
+                )
+                const pricesArr = prices.map((price) => price[1].toFixed(4))
+                this.series = [
+                    {
+                        data: pricesArr,
+                        name: this.cripto.currentCripto.toLocaleUpperCase(),
+                    },
+                ]
+            } catch (error) {
+                this.$toast.error(
+                    'Error getting data, possible API error. Visit https://www.coingecko.com/en/api for more info'
+                )
+            }
         },
         async setCripto() {
             this.loading = true
@@ -206,15 +213,22 @@ export default {
                 this.cripto.currentCripto,
                 fullDate
             )
-            const result = await gecko.getCurrentCoinPriceBasedOnDate(
-                this.cripto.currentCripto,
-                this.coin.currentCoin,
-                dateResult
-            )
-            this.oldPrice = result[1]
-            this.priceTitle = 'Closest available price'
-            this.filterButton = 'Clear filters'
-            this.loading = false
+            try {
+                const result = await gecko.getCurrentCoinPriceBasedOnDate(
+                    this.cripto.currentCripto,
+                    this.coin.currentCoin,
+                    dateResult
+                )
+                this.oldPrice = result[1]
+                this.priceTitle = 'Closest available price'
+                this.filterButton = 'Clear filters'
+                this.loading = false
+            } catch (error) {
+                this.loading = false
+                this.$toast.error(
+                    'Error getting data, possible API error. Visit https://www.coingecko.com/en/api for more info'
+                )
+            }
         },
         clearFilters() {
             this.progressView = true
