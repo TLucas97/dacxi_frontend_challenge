@@ -6,13 +6,14 @@
                 class="flex justify-evenly flex-column flex-md-row align-center w-11/12 sm:w-11/12 mx-auto height-adjust"
             >
                 <div>
-                    <p class="text-center text-sm" @click="updateChart()">
+                    <p class="text-center text-sm">
                         {{ priceTitle }}
                     </p>
                     <div v-if="loading" class="flex justify-center mb-7">
                         <v-progress-circular
                             indeterminate
                             color="blue"
+                            data-testid="loading-spinner"
                         ></v-progress-circular>
                     </div>
                     <h1
@@ -30,6 +31,7 @@
                         class="flex justify-center align-center mb-10 fade-in fade-out"
                     >
                         <v-progress-linear
+                            data-testid="progress-bar"
                             :value="progressValue"
                         ></v-progress-linear>
                     </div>
@@ -40,6 +42,7 @@
                         @change="progressView ? setCripto() : setDateTime()"
                         prepend-icon="mdi-hand-coin"
                         outlined
+                        data-testid="cripto-select"
                     ></v-select>
                     <v-select
                         :items="coin.coins"
@@ -48,6 +51,7 @@
                         @change="progressView ? setCripto() : setDateTime()"
                         prepend-icon="mdi-currency-usd"
                         outlined
+                        data-testid="coin-select"
                     ></v-select>
                     <h3 class="mb-4">Filter price by specific date</h3>
                     <v-text-field
@@ -56,6 +60,7 @@
                         label="Select date"
                         type="date"
                         v-model="currentTime.date"
+                        data-testid="date-input"
                     />
                     <v-text-field
                         outlined
@@ -63,9 +68,11 @@
                         label="Select hour"
                         type="time"
                         v-model="currentTime.hour"
+                        data-testid="hour-input"
                     />
                     <v-btn
                         class="text-capitalize"
+                        data-testid="submit-date-button"
                         @click="progressView ? setDateTime() : clearFilters()"
                         >{{ filterButton }}</v-btn
                     >
@@ -75,13 +82,17 @@
                         class="flex justify-center mb-5 font-weight-bold fade-in fade-out"
                     >
                         <h3 class="text-base">
-                            <span class="text-capitalize">{{
-                                cripto.currentCripto
-                            }}</span>
+                            <span
+                                class="text-capitalize"
+                                data-testid="current-cripto-title"
+                                >{{ cripto.currentCripto }}</span
+                            >
                             Graph History from 30 days ago in
-                            <span class="text-uppercase text-dacxi-success">{{
-                                coin.currentCoin
-                            }}</span>
+                            <span
+                                class="text-uppercase text-dacxi-success"
+                                data-testid="current-coin-title"
+                                >{{ coin.currentCoin }}</span
+                            >
                         </h3>
                     </div>
                     <div>
@@ -148,12 +159,20 @@ export default {
         async setCripto() {
             this.loading = true
             this.progressValue = 0
-            this.price = await gecko.getCoinCurrentPrice(
-                this.cripto.currentCripto,
-                this.coin.currentCoin
-            )
-            await this.updateChart()
-            this.loading = false
+            try {
+                this.price =
+                    (await gecko.getCoinCurrentPrice(
+                        this.cripto.currentCripto,
+                        this.coin.currentCoin
+                    )) || 0
+                await this.updateChart()
+                this.loading = false
+            } catch (error) {
+                this.loading = false
+                this.$toast.error(
+                    'Error getting data, possible API error. Visit https://www.coingecko.com/en/api for more info'
+                )
+            }
         },
         timerUpdate() {
             setInterval(() => {
