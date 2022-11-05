@@ -38,9 +38,14 @@ npm run test
 
 <div style="margin: 1em 0">
     <h1>Cypress Coverage</h1>
-    <video width="1010" height="440" controls style="border: 3px solid black; margin-bottom: 1em">
-        <source src="./src/assets/cypress-dacxi-tests.mp4" type="video/mp4">
-    </video>
+
+#### Click on the image below to see the cypress tests
+
+<a
+href="https://www.youtube.com/watch?v=VGzuZrymQvI"
+target="_blank">
+<img src="./src/assets/cypress-dacxi-tests.png" alt="Sublime's custom image" style="margin-bottom: 1em; width: 1010px; height: 440px"  />
+</a>
 
 ### To open cypress use:
 
