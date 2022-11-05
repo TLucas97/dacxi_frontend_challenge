@@ -52,7 +52,7 @@
             <v-text-field
                 outlined
                 :disabled="!progressView"
-                label="Select date"
+                label="Insert a date"
                 type="date"
                 v-model="currentTime.date"
                 data-testid="date-input"
@@ -60,7 +60,7 @@
             <v-text-field
                 outlined
                 :disabled="!progressView"
-                label="Select hour"
+                label="Insert an hour"
                 type="time"
                 v-model="currentTime.hour"
                 data-testid="hour-input"
@@ -243,7 +243,7 @@ export default {
                             `${day}/${month}/${year}`
                     )
                 }
-                
+
                 // ** If the date limit is returned, it sets the date to the oldest available **
                 this.currentTime.date = comparisonDate
                 const result = await gecko.getCurrentCoinPriceBasedOnDate(
