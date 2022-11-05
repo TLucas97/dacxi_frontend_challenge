@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1667588580642" clover="3.2.0">
-  <project timestamp="1667588580642" name="All files">
-    <metrics statements="520" coveredstatements="395" conditionals="12" coveredconditionals="3" methods="11" coveredmethods="3" elements="543" coveredelements="401" complexity="0" loc="520" ncloc="520" packages="4" files="7" classes="7"/>
+<coverage generated="1667604506728" clover="3.2.0">
+  <project timestamp="1667604506728" name="All files">
+    <metrics statements="533" coveredstatements="387" conditionals="13" coveredconditionals="3" methods="12" coveredmethods="3" elements="558" coveredelements="393" complexity="0" loc="533" ncloc="533" packages="4" files="8" classes="8"/>
     <package name="src">
-      <metrics statements="281" coveredstatements="243" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <metrics statements="59" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="App.vue" path="C:\Users\tarci\Desktop\Challenge\dacxi_frontend_challenge\src\App.vue">
-        <metrics statements="243" coveredstatements="243" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="21" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+      </file>
+      <file name="main.js" path="C:\Users\tarci\Desktop\Challenge\dacxi_frontend_challenge\src\main.js">
+        <metrics statements="38" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="258" coveredstatements="258" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="Content.vue" path="C:\Users\tarci\Desktop\Challenge\dacxi_frontend_challenge\src\components\Content.vue">
+        <metrics statements="235" coveredstatements="235" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -241,59 +309,7 @@
         <line num="233" count="1" type="stmt"/>
         <line num="234" count="1" type="stmt"/>
         <line num="235" count="1" type="stmt"/>
-        <line num="236" count="1" type="stmt"/>
-        <line num="237" count="1" type="stmt"/>
-        <line num="238" count="1" type="stmt"/>
-        <line num="239" count="1" type="stmt"/>
-        <line num="240" count="1" type="stmt"/>
-        <line num="241" count="1" type="stmt"/>
-        <line num="242" count="1" type="stmt"/>
-        <line num="243" count="1" type="stmt"/>
       </file>
-      <file name="main.js" path="C:\Users\tarci\Desktop\Challenge\dacxi_frontend_challenge\src\main.js">
-        <metrics statements="38" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="2" count="0" type="stmt"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="src.components">
-      <metrics statements="23" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="Header.vue" path="C:\Users\tarci\Desktop\Challenge\dacxi_frontend_challenge\src\components\Header.vue">
         <metrics statements="23" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>

@@ -7,6 +7,7 @@ module.exports = defineConfig({
         viewportWidth: 1920,
         video: false,
         screenshotOnRunFailure: false,
+        chromeWebSecurity: false,
         setupNodeEvents(on, config) {
             // implement node event listeners here
         },

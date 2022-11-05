@@ -34,6 +34,10 @@ export const mockedData = [
                 text: 'Dacxi',
                 value: 'dacxi',
             },
+            {
+                text: 'ATOM',
+                value: 'cosmos',
+            },
         ],
         currentCripto: 'bitcoin',
     },

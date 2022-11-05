@@ -5,7 +5,7 @@ export const getCoinMarketChart = async (cripto, coin, days = 30) => {
         const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
             params: {
                 vs_currency: coin,
-                days: days,
+                days,
                 interval: 'daily',
             },
         })
@@ -95,11 +95,13 @@ export const convertDateToMiliseconds = (date) => {
 }
 
 export const validateDateBasedOnCrypto = (cripto, oldDate) => {
+    console.log(oldDate)
     const cryptoLimitDate = {
         bitcoin: 1367323200,
         ethereum: 1438947200,
         'terra-luna': 1559217600,
         dacxi: 1625140800,
+        cosmos: 1551441600,
     }
     const criptos = {
         bitcoin:
@@ -115,6 +117,10 @@ export const validateDateBasedOnCrypto = (cripto, oldDate) => {
                 ? new Date(cryptoLimitDate[cripto] * 1000)
                 : oldDate,
         dacxi:
+            convertDateToMiliseconds(oldDate) < cryptoLimitDate[cripto]
+                ? new Date(cryptoLimitDate[cripto] * 1000)
+                : oldDate,
+        cosmos:
             convertDateToMiliseconds(oldDate) < cryptoLimitDate[cripto]
                 ? new Date(cryptoLimitDate[cripto] * 1000)
                 : oldDate,
