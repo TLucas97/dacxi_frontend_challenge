@@ -1,75 +1,7 @@
 import geckoApi from './geckoApi'
 
-export const getCoinMarketChart = async (cripto, coin, days = 30) => {
-    try {
-        const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
-            params: {
-                vs_currency: coin,
-                days,
-                interval: 'daily',
-            },
-        })
-        return data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const getCoinCurrentPrice = async (cripto, coin) => {
-    try {
-        const { data } = await geckoApi.get(`/coins/${cripto}`)
-        return data?.market_data.current_price?.[coin]
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const getPastFutureRange = (date, futureOrPast) => {
-    const timeState = {
-        future: new Date(date.getTime() + 300 * 300 * 1000),
-        past: new Date(date.getTime() - 300 * 300 * 1000),
-    }
-    return timeState[futureOrPast]
-}
-
-export const getCurrentCoinPriceBasedOnDate = async (
-    cripto,
-    coin,
-    targetDate
-) => {
-    const ranges = {
-        pastDate: getPastFutureRange(targetDate, 'past'),
-        futureDate: getPastFutureRange(targetDate, 'future'),
-    }
-    const timeStamps = {
-        from: convertDateToMiliseconds(ranges.pastDate),
-        to: convertDateToMiliseconds(ranges.futureDate),
-        current: convertDateToMiliseconds(targetDate),
-    }
-    try {
-        const { data } = await geckoApi.get(
-            `/coins/${cripto}/market_chart/range?`,
-            {
-                params: {
-                    vs_currency: coin,
-                    from: timeStamps.from,
-                    to: timeStamps.to,
-                },
-            }
-        )
-        const closestPrice = data.prices.reduce((prev, curr) => {
-            return Math.abs(curr[0] - timeStamps.current) <
-                Math.abs(prev[0] - timeStamps.current)
-                ? curr
-                : prev
-        })
-        return closestPrice
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export const formatPriceBasedOnCoin = (price, coin) => {
+    // ** Hashmap to format price based on coin selected by the user **
     const coins = {
         usd: new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -91,11 +23,12 @@ export const formatPriceBasedOnCoin = (price, coin) => {
 }
 
 export const convertDateToMiliseconds = (date) => {
+    // ** TimeStamp conversion **
     return date.getTime() / 1000
 }
 
 export const validateDateBasedOnCrypto = (cripto, oldDate) => {
-    console.log(oldDate)
+    // ** Current API has date limitations, so I validated the date limit of each crypto by hashmap **
     const cryptoLimitDate = {
         bitcoin: 1367323200,
         ethereum: 1438947200,
@@ -135,4 +68,74 @@ export const disableFutureDates = (date) => {
 
 export const mergeDateAndTime = (date, time) => {
     return new Date(date + ' ' + time)
+}
+
+export const getPastFutureRange = (date, futureOrPast) => {
+    // ** Function used to get the past and future range of the date selected by the user **
+    const timeState = {
+        future: new Date(date.getTime() + 300 * 300 * 1000),
+        past: new Date(date.getTime() - 300 * 300 * 1000),
+    }
+    return timeState[futureOrPast]
+}
+
+export const getCoinMarketChart = async (cripto, coin, days = 30) => {
+    try {
+        const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
+            params: {
+                vs_currency: coin,
+                days,
+                interval: 'daily',
+            },
+        })
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getCoinCurrentPrice = async (cripto, coin) => {
+    try {
+        const { data } = await geckoApi.get(`/coins/${cripto}`)
+        return data?.market_data.current_price?.[coin]
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getCurrentCoinPriceBasedOnDate = async (
+    cripto,
+    coin,
+    targetDate
+) => {
+    const ranges = {
+        pastDate: getPastFutureRange(targetDate, 'past'),
+        futureDate: getPastFutureRange(targetDate, 'future'),
+    }
+    const timeStamps = {
+        from: convertDateToMiliseconds(ranges.pastDate),
+        to: convertDateToMiliseconds(ranges.futureDate),
+        current: convertDateToMiliseconds(targetDate),
+    }
+    try {
+        const { data } = await geckoApi.get(
+            `/coins/${cripto}/market_chart/range?`,
+            {
+                params: {
+                    vs_currency: coin,
+                    from: timeStamps.from,
+                    to: timeStamps.to,
+                },
+            }
+        )
+        const closestPrice = data.prices.reduce((prev, curr) => {
+            return Math.abs(curr[0] - timeStamps.current) <
+                Math.abs(prev[0] - timeStamps.current)
+                ? curr
+                : prev
+        })
+        return closestPrice
+    } catch (error) {
+        console.log(error)
+    }
 }

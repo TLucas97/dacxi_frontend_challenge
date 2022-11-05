@@ -1,6 +1,7 @@
 describe('DateInput', () => {
     it('should have a date input', () => {
         cy.visit('/')
+        // ** Inserts the date and time to be used in the test with a 6 seconds interval to prevent API errors **
         cy.get('[data-testid=progress-bar]').should('be.visible')
         cy.get('[data-testid=date-input]').should('be.visible').click()
         cy.get('[data-testid=date-input]').type('2022-05-15')

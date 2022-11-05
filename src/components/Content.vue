@@ -152,6 +152,7 @@ export default {
             this.progressValue = 0
         },
         progressValue() {
+            // ** Restarts progress bar value when it reaches 100% **
             if (this.progressValue === 100) {
                 this.progressValue = 0
                 this.setCripto()
@@ -205,6 +206,7 @@ export default {
         },
         async setDateTime() {
             try {
+                // ** Empty validation **
                 if (
                     this.currentTime.date === '' ||
                     this.currentTime.hour === ''
@@ -233,13 +235,16 @@ export default {
                 if (day.length === 1) day = '0' + day
                 const year = dateResult.getFullYear()
                 const comparisonDate = `${year}-${month}-${day}`
-                console.log(this.currentTime.date, comparisonDate)
+
+                // ** Warning message for oldest available date **
                 if (comparisonDate !== this.currentTime.date) {
                     this.$toast.warning(
                         'Oldest date available for this crypto is ' +
                             `${day}/${month}/${year}`
                     )
                 }
+                
+                // ** If the date limit is returned, it sets the date to the oldest available **
                 this.currentTime.date = comparisonDate
                 const result = await gecko.getCurrentCoinPriceBasedOnDate(
                     this.cripto.currentCripto,

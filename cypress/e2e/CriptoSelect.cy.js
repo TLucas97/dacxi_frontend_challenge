@@ -1,5 +1,6 @@
 describe('Cripto Select', () => {
     it('it should change cripto value and chart title text when cripto select is used', () => {
+        // ** Selects the cripto to be used in the test with a 6 seconds interval to prevent API errors **
         cy.visit('/')
         cy.get('[data-testid=loading-spinner]').should('be.visible')
         cy.wait(6000)

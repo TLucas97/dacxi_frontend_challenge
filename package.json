@@ -11,7 +11,8 @@
     "scripts": {
         "dev": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "test": "jest"
+        "test": "jest",
+        "cypress:open": "cypress open"
     },
     "dependencies": {
         "apexcharts": "^3.36.0",
@@ -23,8 +24,7 @@
         "vue": "^2.6.11",
         "vue-apexcharts": "^1.6.2",
         "vue-toastification": "^1.7.14",
-        "vuetify": "^2.6.0",
-        "vuetify-datetime-picker": "^2.1.1"
+        "vuetify": "^2.6.0"
     },
     "devDependencies": {
         "@babel/core": "^7.19.6",

@@ -1,5 +1,6 @@
 describe('Select', () => {
-    it('it should change cripto value and chart title text when coin select is used', () => {
+    it('it should change coin value and chart title text when coin select is used', () => {
+        // ** Selects the coin to be used in the test with a 6 seconds interval to prevent API errors **
         cy.visit('/')
         cy.wait(6000)
         cy.get('[data-testid=coin-select]').should('be.visible').click()
