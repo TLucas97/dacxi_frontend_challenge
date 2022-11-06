@@ -92,7 +92,7 @@
             </div>
             <div>
                 <apexchart
-                    width="600"
+                    width="700"
                     type="area"
                     :options="options"
                     :series="series"
@@ -167,12 +167,23 @@ export default {
                     this.coin.currentCoin
                 )
                 const pricesArr = prices.map((price) => price[1].toFixed(4))
+                const datesArr = prices.map((price) => {
+                    const fullDate = new Date(price[0])
+                    const date = fullDate.getDate()
+                    const month = fullDate.getMonth() + 1
+                    return `${date}/${month}`
+                })
                 this.series = [
                     {
                         data: pricesArr,
                         name: this.cripto.currentCripto.toLocaleUpperCase(),
                     },
                 ]
+                this.options = {
+                    xaxis: {
+                        categories: datesArr,
+                    },
+                }
             } catch (error) {
                 this.$toast.error(
                     'Error getting data, possible API error. Visit https://www.coingecko.com/en/api for more info'
