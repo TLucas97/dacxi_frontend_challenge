@@ -82,11 +82,14 @@
                         data-testid="current-cripto-title"
                         >{{ cripto.currentCripto }}</span
                     >
-                    Graph History from 30 days ago in
+                    Graph History in
                     <span
                         class="text-uppercase text-dacxi-success"
                         data-testid="current-coin-title"
                         >{{ coin.currentCoin }}</span
+                    >
+                    <span v-if="oldDateDisplay" class="ml-1"
+                        >at {{ oldDateDisplay || '' }}</span
                     >
                 </h3>
             </div>
@@ -116,6 +119,7 @@ export default {
             date: '',
             hour: '',
         },
+        oldDateDisplay: '',
         priceTitle: 'Current price',
         filterButton: 'Filter',
         price: '',
@@ -160,6 +164,52 @@ export default {
         },
     },
     methods: {
+        async updateChartBasedOnOldDate() {
+            try {
+                const fullDate = gecko.mergeDateAndTime(
+                    this.currentTime.date,
+                    this.currentTime.hour
+                )
+                const dateResult = gecko.validateDateBasedOnCrypto(
+                    this.cripto.currentCripto,
+                    fullDate
+                )
+                const result = await gecko.returnOneMonthBefore(
+                    this.cripto.currentCripto,
+                    this.coin.currentCoin,
+                    dateResult
+                )
+                const pricesArr = result.map((price) => price[1].toFixed(4))
+                const datesArr = result.map((price) => {
+                    const fullDate = new Date(price[0])
+                    const date = fullDate.getDate()
+                    const month = fullDate.getMonth() + 1
+                    return `${date}/${month}`
+                })
+                this.series = [
+                    {
+                        data: pricesArr,
+                        name: this.cripto.currentCripto.toLocaleUpperCase(),
+                    },
+                ]
+                this.options = {
+                    xaxis: {
+                        categories: datesArr,
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: (value) =>
+                                this.formatCurrency(
+                                    value,
+                                    this.coin.currentCoin
+                                ),
+                        },
+                    },
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async updateChart() {
             try {
                 const { prices } = await gecko.getCoinMarketChart(
@@ -262,18 +312,19 @@ export default {
                         'Oldest date available for this crypto is ' +
                             `${day}/${month}/${year}`
                     )
+                    // ** If the date limit is returned, it sets the date to the oldest available **
+                    this.currentTime.date = comparisonDate
                 }
-
-                // ** If the date limit is returned, it sets the date to the oldest available **
-                this.currentTime.date = comparisonDate
                 const result = await gecko.getCurrentCoinPriceBasedOnDate(
                     this.cripto.currentCripto,
                     this.coin.currentCoin,
                     dateResult
                 )
+                this.updateChartBasedOnOldDate()
                 this.oldPrice = result[1]
                 this.priceTitle = 'Closest available price'
                 this.filterButton = 'Clear filters'
+                this.oldDateDisplay = `${day}/${month}/${year}`
                 this.loading = false
             } catch (error) {
                 this.loading = false
@@ -288,7 +339,9 @@ export default {
             this.filterButton = 'Filter'
             this.currentTime.date = ''
             this.currentTime.hour = ''
+            this.oldDateDisplay = ''
             this.setCripto()
+            this.updateChart()
         },
     },
 }

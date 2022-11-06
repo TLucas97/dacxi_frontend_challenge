@@ -79,6 +79,30 @@ export const getPastFutureRange = (date, futureOrPast) => {
     return timeState[futureOrPast]
 }
 
+export const returnOneMonthBefore = async (cripto, coin, date) => {
+    const currentDate = convertDateToMiliseconds(date)
+    const oneMonthBefore = convertDateToMiliseconds(
+        new Date(date.setMonth(date.getMonth() - 1))
+    )
+    try {
+        const { data } = await geckoApi.get(
+            `/coins/${cripto}/market_chart/range?`,
+            {
+                params: {
+                    vs_currency: coin,
+                    from: oneMonthBefore,
+                    to: currentDate,
+                },
+            }
+        )
+        const pricesArr = data.prices
+        const pricesArr30 = pricesArr.slice(pricesArr.length - 30)
+        return pricesArr30
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getCoinMarketChart = async (cripto, coin, days = 30) => {
     try {
         const { data } = await geckoApi.get(`/coins/${cripto}/market_chart?`, {
