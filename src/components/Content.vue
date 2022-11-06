@@ -183,6 +183,15 @@ export default {
                     xaxis: {
                         categories: datesArr,
                     },
+                    yaxis: {
+                        labels: {
+                            formatter: (value) =>
+                                this.formatCurrency(
+                                    value,
+                                    this.coin.currentCoin
+                                ),
+                        },
+                    },
                 }
             } catch (error) {
                 this.$toast.error(

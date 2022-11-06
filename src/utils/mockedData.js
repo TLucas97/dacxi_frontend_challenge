@@ -49,15 +49,6 @@ export const mockedData = [
             xaxis: {
                 categories: [],
             },
-            yaxis: {
-                labels: {
-                    formatter: function (value) {
-                        return value
-                            .toFixed(4)
-                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
-                    },
-                },
-            },
             responsive: [
                 {
                     breakpoint: 600,
