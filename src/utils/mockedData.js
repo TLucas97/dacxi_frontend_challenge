@@ -64,11 +64,5 @@ export const mockedData = [
                 },
             ],
         },
-        series: [
-            {
-                name: '',
-                data: [],
-            },
-        ],
     },
 ]
